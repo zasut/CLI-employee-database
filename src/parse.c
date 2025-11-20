@@ -10,6 +10,22 @@
 #include "common.h"
 #include "parse.h"
 
+void output_file(int fd, struct dbheader_t *dbhdr) {
+    if (fd < 0) {
+        printf("Got a bad FD from the user\n");
+    }
+
+    dbhdr->magic = htonl(dbhdr->magic);
+    dbhdr->filesize = htonl(dbhdr->filesize);
+    dbhdr->version = htons(dbhdr->version);
+    dbhdr->count = htons(dbhdr->filesize);
+
+    lseek(fd, 0, SEEK_SET);
+
+    write(fd, dbhdr, sizeof(struct dbheader_t));
+    return;
+}
+
 int validate_db_header(int fd, struct dbheader_t **headerOut) {
     if (fd < 0) {
         printf("Got a bad FD from the user\n");
@@ -54,6 +70,8 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
         free(header);
         return -1; 
     }
+
+    *headerOut = header;
 
 }
 
