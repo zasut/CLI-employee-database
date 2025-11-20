@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
 
     int dbfd = -1;
     struct dbheader_t *dbhdr = NULL;
+    struct employees_t *employees = NULL;
 
     while((c = getopt(argc, argv, "nf: ")) != -1) {
         switch (c) {
@@ -70,6 +71,10 @@ int main(int argc, char *argv[]) {
             return -1;
         }
 
+    }
+
+    if (read_employees(dbfd, dbhdr, &employees) != STATUS_SUCCESS) {
+        printf("Failed to read employees");
     }
 
     output_file(dbfd, dbhdr);
