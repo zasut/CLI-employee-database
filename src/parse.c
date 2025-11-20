@@ -17,8 +17,9 @@ void output_file(int fd, struct dbheader_t *dbhdr) {
 
     dbhdr->magic = htonl(dbhdr->magic);
     dbhdr->filesize = htonl(dbhdr->filesize);
-    dbhdr->version = htons(dbhdr->version);
     dbhdr->count = htons(dbhdr->filesize);
+    dbhdr->version = htons(dbhdr->version);
+    
 
     lseek(fd, 0, SEEK_SET);
 
