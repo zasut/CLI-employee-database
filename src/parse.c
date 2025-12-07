@@ -10,6 +10,35 @@
 #include "common.h"
 #include "parse.h"
 
+
+int delete_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *nameToRemove) {
+    int i = 0;
+    int foundIndex = -1;
+
+    for (i = 0; i < dbhdr->count; i++) {
+        if (strcmp(employees[i].name, nameToRemove) == 0) {
+            foundIndex = i;
+            break;
+        }
+    }
+
+    if (foundIndex == -1) {
+        printf("Employee '%s' was not found.\n", nameToRemove);
+        return -1;
+    }
+
+    for (i = foundIndex; i < dbhdr->count -1; i++) {
+        employees[i] = employees[i + 1];
+    }
+
+    dbhdr->count--;
+
+    printf("Employee '%s' deleted.\n", nameToRemove);
+    return 0;
+}
+
+
+
 //Function for -l
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
     int i = 0;

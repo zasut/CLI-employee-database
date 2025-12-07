@@ -22,6 +22,7 @@ int read_employees(int fd, struct dbheader_t *, struct employee_t **employeesOut
 void output_file(int fd, struct dbheader_t *, struct employee_t *employees); 
 int add_employee(struct dbheader_t *, struct employee_t **employees, char *);
 void list_employees(struct dbheader_t *, struct employee_t *employees);
+int delete_employee(struct dbheader_t *, struct employee_t *employees, char *);
 
 
 #endif

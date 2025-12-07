@@ -13,7 +13,7 @@ void print_usage(char *argv[]) {
     printf("\t -f - (required) path to database file\n");
     printf("\t -l - list the employees\n");
     printf("\t -a - add via CSV line of (name,address,salary)\n");
-    
+    printf("\t -d - (employee_name) deletes the first match for select employee name");
     return;
 }
 
@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
 
     char *filepath = NULL;
     char *addstring = NULL;
+    char *deletestring = NULL;
     bool newfile = false;
     bool list = false;
     int c;
@@ -31,7 +32,7 @@ int main(int argc, char *argv[]) {
     struct employees_t *employees = NULL;
 
 // gets user options with functions listed in line 10
-    while((c = getopt(argc, argv, "nf:a:l")) != -1) {
+    while((c = getopt(argc, argv, "nf:a:ld:")) != -1) {
         switch (c) {
             case 'n':
                     newfile = true;
@@ -45,10 +46,10 @@ int main(int argc, char *argv[]) {
             case 'l':
                     list = true;
                     break;
-            /* case 'd': 
-                        
-                        break;
-            case 'u':
+            case 'd': 
+                    deletestring = optarg;
+                    break;
+            /*case 'u':
                     
                     break;
             */
@@ -100,6 +101,10 @@ int main(int argc, char *argv[]) {
 
     if (addstring) {
         add_employee(dbhdr, &employees, addstring);
+    }
+
+    if (deletestring) {
+        delete_employee(dbhdr, employees, deletestring);
     }
 
     if (list) {

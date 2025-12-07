@@ -5,6 +5,9 @@ OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
 run: clean default
 		./$(TARGET) -f ./mynewdb.db -n
 		./bin/dbview -f mynewdb.db -a "Test,123 road,120"
+		./bin/dbview -f mynewdb.db -l
+		./bin/dbview -f mynewdb.db -d "Test"
+		./bin/dbview -f mynewdb.db -l
 
 default: $(TARGET)
 
