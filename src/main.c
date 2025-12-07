@@ -12,7 +12,8 @@ void print_usage(char *argv[]) {
     printf("\t -n - create new database file\n");
     printf("\t -f - (required) path to database file\n");
     printf("\t -l - list the employees\n");
-    printf("\t -a - addvia CSV line of (name,address,salary)\n");
+    printf("\t -a - add via CSV line of (name,address,salary)\n");
+    
     return;
 }
 
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]) {
     struct dbheader_t *dbhdr = NULL;
     struct employees_t *employees = NULL;
 
+// gets user options with functions listed in line 10
     while((c = getopt(argc, argv, "nf:a:l")) != -1) {
         switch (c) {
             case 'n':
@@ -43,6 +45,13 @@ int main(int argc, char *argv[]) {
             case 'l':
                     list = true;
                     break;
+            /* case 'd': 
+                        
+                        break;
+            case 'u':
+                    
+                    break;
+            */
              case '?':
                     printf("Unknown option -%c\n", c);
                     break;

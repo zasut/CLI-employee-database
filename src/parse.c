@@ -10,6 +10,7 @@
 #include "common.h"
 #include "parse.h"
 
+//Function for -l
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
     int i = 0;
     for (; i < dbhdr->count; i++) {
@@ -20,6 +21,7 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
     }
 }
 
+//Function for -a
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
 
     if (NULL == dbhdr) return STATUS_ERROR;
@@ -55,6 +57,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
     return STATUS_SUCCESS;
 }
 
+//Function to read the employees from the db 
 int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employeesOut) {
      if (fd < 0) {
         printf("Got a bad FD from the user\n");
@@ -83,6 +86,7 @@ int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employe
 
 }
 
+// Function to check the file directory and ouput the file 
 void output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) {
     if (fd < 0) {
         printf("Got a bad FD from the user\n");
@@ -108,7 +112,7 @@ void output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees)
 
     return;
 }
-
+//Function to check the DB header
 int validate_db_header(int fd, struct dbheader_t **headerOut) {
     if (fd < 0) {
         printf("Got a bad FD from the user\n");
@@ -158,7 +162,7 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
 
 }
 
-
+//Function for -n
 int create_db_header(int fd, struct dbheader_t **headerOut) {
     struct dbheader_t *header = calloc(1, sizeof(struct dbheader_t));
     if (header == -1) {
