@@ -3,11 +3,16 @@ SRC = $(wildcard src/*.c)
 OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))
 
 run: clean default
+# sample db file named 'mynewdb.db'
 		./$(TARGET) -f ./mynewdb.db -n
-		./bin/dbview -f mynewdb.db -a "Test,123 road,120"
-		./bin/dbview -f mynewdb.db -l
-		./bin/dbview -f mynewdb.db -d "Test"
-		./bin/dbview -f mynewdb.db -l
+# Example of adding an employee to the db	
+# ./bin/dbview -f mynewdb.db -a "Test,123 road,120"
+# Lists all employees in the db
+# ./bin/dbview -f mynewdb.db -l
+# Deletion example
+# ./bin/dbview -f mynewdb.db -d "Test"
+# Updating employee info example
+# /bin/dbview -f mynewdb.db -u "Test" -a "Rest, 210 road, 20"
 
 default: $(TARGET)
 

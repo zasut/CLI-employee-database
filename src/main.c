@@ -14,6 +14,7 @@ void print_usage(char *argv[]) {
     printf("\t -l - list the employees\n");
     printf("\t -a - add via CSV line of (name,address,salary)\n");
     printf("\t -d - (employee_name) deletes the first match for select employee name");
+    printf("\t -u - (employee_name) -a (name,address,salary)");
     return;
 }
 
@@ -23,6 +24,7 @@ int main(int argc, char *argv[]) {
     char *filepath = NULL;
     char *addstring = NULL;
     char *deletestring = NULL;
+    char *updatestring = NULL;
     bool newfile = false;
     bool list = false;
     int c;
@@ -32,7 +34,7 @@ int main(int argc, char *argv[]) {
     struct employees_t *employees = NULL;
 
 // gets user options with functions listed in line 10
-    while((c = getopt(argc, argv, "nf:a:ld:")) != -1) {
+    while((c = getopt(argc, argv, "nf:a:ld:u:")) != -1) {
         switch (c) {
             case 'n':
                     newfile = true;
@@ -49,10 +51,9 @@ int main(int argc, char *argv[]) {
             case 'd': 
                     deletestring = optarg;
                     break;
-            /*case 'u':
-                    
+            case 'u':
+                    updatestring = optarg;
                     break;
-            */
              case '?':
                     printf("Unknown option -%c\n", c);
                     break;
@@ -99,9 +100,21 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    if (addstring) {
+    if (updatestring) {
+
+        if (addstring == NULL) {
+            printf("Error: To update, please use -a to provide new data.\n");
+            printf("Example: -u \"OldName\" -a \"NewName,NewAddr,NewHours\"\n");
+            return -1;
+        }
+
+        update_employee(dbhdr, employees, updatestring, addstring);
+    }
+
+   else if (addstring) {
         add_employee(dbhdr, &employees, addstring);
     }
+
 
     if (deletestring) {
         delete_employee(dbhdr, employees, deletestring);

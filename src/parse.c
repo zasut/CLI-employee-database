@@ -10,6 +10,46 @@
 #include "common.h"
 #include "parse.h"
 
+int update_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *nameToFind, char *newString) {
+    int i = 0;
+    int foundIndex = -1;
+
+    for (i = 0; i < dbhdr->count; i++) {
+        if (strcmp(employees[i].name, nameToFind) == 0) {
+            foundIndex = i;
+            break;
+        }
+    }
+
+    if (foundIndex == -1) {
+        printf("Employee '%s' not found.\n", nameToFind);
+        return -1;
+    }
+
+    char *newName = strtok(newString, ",");
+    char *newAddr = strtok(NULL, ",");
+    char *newHours = strtok(NULL, ",");
+
+    if (newName == NULL || newAddr == NULL || newHours == NULL) {
+        printf("Error: Invalid data format. Use 'Name,Address,Hours'\n");
+        return -1;
+    }
+
+    strncpy(employees[foundIndex].name, newName, sizeof(employees[foundIndex].name) - 1);
+
+    employees[foundIndex].name[sizeof(employees[foundIndex].name) - 1] = '\0';
+
+
+    strncpy(employees[foundIndex].address, newAddr, sizeof(employees[foundIndex].address) - 1);
+    employees[foundIndex].address[sizeof(employees[foundIndex].address) - 1] = '\0';
+
+    employees[foundIndex].hours = atoi(newHours);
+
+
+    printf("Employee '%s' updated successfully.\n", nameToFind);
+    return 0;
+}
+
 
 int delete_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *nameToRemove) {
     int i = 0;
@@ -123,13 +163,20 @@ void output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees)
 
     int realcount = dbhdr->count;
 
+    // Calculates the real size of the wrriten data
+    off_t new_file_size = sizeof(struct dbheader_t) + (sizeof(struct employee_t) * realcount);
+
     dbhdr->magic = htonl(dbhdr->magic);
-    dbhdr->filesize = htonl(sizeof(struct dbheader_t) + (sizeof(struct employee_t) * realcount));
+    dbhdr->filesize = htonl(new_file_size);
     dbhdr->count = htons(dbhdr->count);
     dbhdr->version = htons(dbhdr->version);
     
 
     lseek(fd, 0, SEEK_SET);
+
+    //removes extra data
+    ftruncate(fd, new_file_size);
+
 
     write(fd, dbhdr, sizeof(struct dbheader_t));
 
