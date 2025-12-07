@@ -15,7 +15,7 @@ C-based command-line interface tool for managing a simple file database of emplo
 ## How to build and run:
 1.) Clone the repository
 
-```git clone https://github.com/zasut/employee-database```
+```git clone https://github.com/zasut/CLI-employee-database```
  
 2,) Compile the project using pre-existing makefile 
 ```make```
